@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>제주도시재생지원센터</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            jeju: {
+              50:  '#f0faf4',
+              100: '#d9f2e3',
+              200: '#b3e5c8',
+              300: '#7dd0a6',
+              400: '#45b57e',
+              500: '#259860',
+              600: '#1a7a4c',
+              700: '#15613d',
+              800: '#124d31',
+              900: '#0f3f28',
+            },
+            stone: {
+              850: '#1c1917',
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans KR"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    html { scroll-behavior: smooth; }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 2px; background: #259860;
+      transition: width .3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .card-hover { transition: transform .3s ease, box-shadow .3s ease; }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,.12); }
+    .hero-overlay {
+      background: linear-gradient(135deg,
+        rgba(10,60,35,.75) 0%,
+        rgba(15,63,40,.55) 50%,
+        rgba(0,0,0,.3) 100%);
+    }
+    .counter { font-variant-numeric: tabular-nums; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .fade-up { animation: fadeUp .8s ease both; }
+    .delay-1 { animation-delay:.15s; }
+    .delay-2 { animation-delay:.30s; }
+    .delay-3 { animation-delay:.45s; }
+    .delay-4 { animation-delay:.60s; }
+  </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+
+<!-- =========================================================
+     NAVIGATION
+========================================================= -->
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur shadow-sm">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+    <!-- 로고 -->
+    <a href="#" class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-lg bg-jeju-600 flex items-center justify-center">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 21V12h6v9"/>
+        </svg>
+      </div>
+      <div class="leading-tight">
+        <p class="text-[11px] text-jeju-600 font-semibold tracking-widest uppercase">Jeju</p>
+        <p class="text-sm font-bold text-gray-900 -mt-0.5">도시재생지원센터</p>
+      </div>
+    </a>
+
+    <!-- PC 메뉴 -->
+    <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+      <a href="#about"    class="nav-link hover:text-jeju-600 transition-colors">센터소개</a>
+      <a href="#programs" class="nav-link hover:text-jeju-600 transition-colors">사업안내</a>
+      <a href="#areas"    class="nav-link hover:text-jeju-600 transition-colors">재생지역</a>
+      <a href="#news"     class="nav-link hover:text-jeju-600 transition-colors">새소식</a>
+      <a href="#contact"  class="nav-link hover:text-jeju-600 transition-colors">오시는길</a>
+    </nav>
+
+    <a href="#contact"
+       class="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-jeju-600 text-white text-sm font-semibold hover:bg-jeju-700 transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+      </svg>
+      문의하기
+    </a>
+
+    <!-- 모바일 햄버거 -->
+    <button id="menu-btn" class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- 모바일 메뉴 -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white px-6 py-4 space-y-3 text-sm font-medium text-gray-700">
+    <a href="#about"    class="block py-1 hover:text-jeju-600">센터소개</a>
+    <a href="#programs" class="block py-1 hover:text-jeju-600">사업안내</a>
+    <a href="#areas"    class="block py-1 hover:text-jeju-600">재생지역</a>
+    <a href="#news"     class="block py-1 hover:text-jeju-600">새소식</a>
+    <a href="#contact"  class="block py-1 hover:text-jeju-600">오시는길</a>
+  </div>
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+<section class="relative h-screen min-h-[640px] flex items-center overflow-hidden">
+  <!-- 배경 이미지 — 제주 원도심 골목 (Unsplash, CC0) -->
+  <img
+    src="https://images.unsplash.com/photo-1598085109539-c7a4b9fa4b80?w=1800&q=80"
+    alt="제주 원도심"
+    class="absolute inset-0 w-full h-full object-cover"
+    onerror="this.src='https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1800&q=80'"
+  />
+  <div class="hero-overlay absolute inset-0"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 pt-16">
+    <div class="max-w-2xl">
+      <span class="fade-up inline-block px-3 py-1 rounded-full bg-jeju-500/30 border border-jeju-400/50 text-jeju-200 text-xs font-semibold tracking-widest uppercase mb-5">
+        Jeju Urban Regeneration
+      </span>
+      <h1 class="fade-up delay-1 text-5xl md:text-6xl font-black text-white leading-tight mb-5">
+        원도심에<br/>새 생명을,<br/>
+        <span class="text-jeju-300">제주와 함께</span>
+      </h1>
+      <p class="fade-up delay-2 text-lg text-gray-200 leading-relaxed mb-8 max-w-xl">
+        제주도시재생지원센터는 제주 원도심의 역사·문화 자원을 보전하고,
+        주민과 함께 지속 가능한 마을 공동체를 만들어갑니다.
+      </p>
+      <div class="fade-up delay-3 flex flex-wrap gap-3">
+        <a href="#programs"
+           class="px-6 py-3 rounded-xl bg-jeju-500 hover:bg-jeju-400 text-white font-semibold transition-colors shadow-lg shadow-jeju-900/30">
+          사업 둘러보기
+        </a>
+        <a href="#about"
+           class="px-6 py-3 rounded-xl bg-white/15 hover:bg-white/25 border border-white/30 text-white font-semibold backdrop-blur transition-colors">
+          센터 소개
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스크롤 유도 -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/60 text-xs animate-bounce">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+    </svg>
+    <span>SCROLL</span>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     STATS BAR
+========================================================= -->
+<section class="bg-jeju-700 py-10">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
+    <div>
+      <p class="counter text-4xl font-black text-jeju-200">12</p>
+      <p class="text-sm mt-1 text-jeju-100/80">재생활성화 지역</p>
+    </div>
+    <div>
+      <p class="counter text-4xl font-black text-jeju-200">3,400+</p>
+      <p class="text-sm mt-1 text-jeju-100/80">주민 참여 가구</p>
+    </div>
+    <div>
+      <p class="counter text-4xl font-black text-jeju-200">87</p>
+      <p class="text-sm mt-1 text-jeju-100/80">완료 사업 건수</p>
+    </div>
+    <div>
+      <p class="counter text-4xl font-black text-jeju-200">2016</p>
+      <p class="text-sm mt-1 text-jeju-100/80">설립 연도</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     ABOUT
+========================================================= -->
+<section id="about" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+    <!-- 텍스트 -->
+    <div>
+      <p class="text-jeju-600 font-semibold text-sm tracking-widest uppercase mb-3">About Us</p>
+      <h2 class="text-4xl font-black text-gray-900 mb-6 leading-snug">
+        사람과 장소가<br/>이어지는 공간
+      </h2>
+      <p class="text-gray-600 leading-relaxed mb-4">
+        제주도시재생지원센터는 노후화된 제주 원도심에 활력을 불어넣기 위해
+        설립된 공공지원센터입니다. 주민 주도 사업 발굴, 전문가 컨설팅,
+        청년 창업 지원을 통해 지역 공동체의 자생력을 키워갑니다.
+      </p>
+      <p class="text-gray-600 leading-relaxed mb-8">
+        역사와 현재가 공존하는 제주목 관아 주변 원도심을 비롯해,
+        삼도·이도·건입동 일대의 골목길과 근대건축 자산을 보전하며
+        새로운 도시 문화를 창출합니다.
+      </p>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl bg-jeju-50 border border-jeju-100">
+          <div class="w-10 h-10 rounded-lg bg-jeju-600 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+          </div>
+          <p class="font-semibold text-gray-800 text-sm">주민 중심</p>
+          <p class="text-xs text-gray-500 mt-1">주민이 주도하는 마을 계획 수립</p>
+        </div>
+        <div class="p-4 rounded-xl bg-jeju-50 border border-jeju-100">
+          <div class="w-10 h-10 rounded-lg bg-jeju-600 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+            </svg>
+          </div>
+          <p class="font-semibold text-gray-800 text-sm">지속 가능성</p>
+          <p class="text-xs text-gray-500 mt-1">장기적 관점의 재생 전략 설계</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 이미지 콜라주 -->
+    <div class="grid grid-cols-2 gap-3 h-[460px]">
+      <div class="row-span-2 rounded-2xl overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1598939411600-41b456b8e87e?w=600&q=80"
+          alt="제주 골목"
+          class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+          onerror="this.src='https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?w=600&q=80'"
+        />
+      </div>
+      <div class="rounded-2xl overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1571401835393-8c5f35328320?w=600&q=80"
+          alt="제주 원도심"
+          class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+          onerror="this.src='https://images.unsplash.com/photo-1534430480872-3498386e7856?w=600&q=80'"
+        />
+      </div>
+      <div class="rounded-2xl overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=600&q=80"
+          alt="제주 거리"
+          class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+          onerror="this.src='https://images.unsplash.com/photo-1538484616879-d40753259bd2?w=600&q=80'"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     PROGRAMS
+========================================================= -->
+<section id="programs" class="py-24 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <p class="text-jeju-600 font-semibold text-sm tracking-widest uppercase mb-2">Our Programs</p>
+      <h2 class="text-4xl font-black text-gray-900">주요 사업</h2>
+      <p class="text-gray-500 mt-3 max-w-xl mx-auto">원도심 재생을 위한 다양한 사업을 주민과 함께 추진합니다.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- 카드 1 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="h-48 overflow-hidden relative">
+          <img
+            src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=700&q=80"
+            alt="주민공동체"
+            class="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+            onerror="this.src='https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=700&q=80'"
+          />
+          <div class="absolute top-3 left-3">
+            <span class="px-2.5 py-1 rounded-full bg-jeju-600 text-white text-xs font-semibold">주민참여</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-lg font-bold text-gray-900 mb-2">주민공동체 역량강화</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">
+            마을 리더 교육, 공동체 활성화 워크숍, 주민 협의체 운영 지원을 통해 자생적 마을 거버넌스를 구축합니다.
+          </p>
+          <a href="#" class="mt-4 inline-flex items-center gap-1 text-jeju-600 text-sm font-semibold hover:gap-2 transition-all">
+            자세히 보기
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 카드 2 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="h-48 overflow-hidden relative">
+          <img
+            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=700&q=80"
+            alt="골목 재생"
+            class="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+            onerror="this.src='https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=700&q=80'"
+          />
+          <div class="absolute top-3 left-3">
+            <span class="px-2.5 py-1 rounded-full bg-amber-500 text-white text-xs font-semibold">물리환경</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-lg font-bold text-gray-900 mb-2">골목길 환경 개선</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">
+            노후 담장 정비, 가로등 교체, 벽화·공공미술 조성 등 보행 친화적인 원도심 골목 환경을 만들어갑니다.
+          </p>
+          <a href="#" class="mt-4 inline-flex items-center gap-1 text-jeju-600 text-sm font-semibold hover:gap-2 transition-all">
+            자세히 보기
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 카드 3 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="h-48 overflow-hidden relative">
+          <img
+            src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=700&q=80"
+            alt="청년창업"
+            class="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+            onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=700&q=80'"
+          />
+          <div class="absolute top-3 left-3">
+            <span class="px-2.5 py-1 rounded-full bg-purple-600 text-white text-xs font-semibold">청년지원</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-lg font-bold text-gray-900 mb-2">청년 창업·공간 지원</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">
+            빈 점포 리모델링 지원, 청년 창업 멘토링, 팝업스토어 운영 지원으로 원도심에 젊은 활기를 더합니다.
+          </p>
+          <a href="#" class="mt-4 inline-flex items-center gap-1 text-jeju-600 text-sm font-semibold hover:gap-2 transition-all">
+            자세히 보기
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 카드 4 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="h-48 overflow-hidden relative">
+          <img
+            src="https://images.unsplash.com/photo-1493552152660-f915ab47ae9d?w=700&q=80"
+            alt="역사문화"
+            class="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+            onerror="this.src='https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=700&q=80'"
+          />
+          <div class="absolute top-3 left-3">
+            <span class="px-2.5 py-1 rounded-full bg-rose-600 text-white text-xs font-semibold">역사문화</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-lg font-bold text-gray-900 mb-2">역사문화자원 활용</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">
+            제주목 관아, 관덕정 등 역사 자산을 활용한 문화 프로그램과 스토리텔링 투어를 운영합니다.
+          </p>
+          <a href="#" class="mt-4 inline-flex items-center gap-1 text-jeju-600 text-sm font-semibold hover:gap-2 transition-all">
+            자세히 보기
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 카드 5 -->
+      <div class="card-hover bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+        <div class="h-48 overflow-hidden relative">
+          <img
+            src="https://images.unsplash.com/photo-1467533003447-e295ff1b0435?w=700&q=80"
+            alt="빈집 활용"
+            class="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+            onerror="this.src='https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=700&q=80'"
+          />
+          <div class="absolute top-3 left-3">
+            <span class="px-2.5 py-1 rounded-full bg-teal-600 text-white text-xs font-semibold">빈집활용</span>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-lg font-bold text-gray-900 mb-2">빈집·빈점포 재생</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">
+            원도심 내 빈집을 커뮤니티 공간, 게스트하우스, 문화시설로 전환해 자원의 선순환을 실현합니다.
+          </p>
+          <a href="#" class="mt-4 inline-flex items-center gap-1 text-jeju-600 text-sm font-semibold hover:gap-2 transition-all">
+            자세히 보기
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- 카드 6 — CTA -->
+      <div class="card-hover bg-jeju-700 rounded-2xl overflow-hidden shadow-sm flex flex-col justify-between p-8">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-jeju-500 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">사업 참여 신청</h3>
+          <p class="text-jeju-200 text-sm leading-relaxed">
+            원도심 재생 사업에 참여하고 싶으신가요? 센터로 문의 주시면 맞춤 상담을 제공해 드립니다.
+          </p>
+        </div>
+        <a href="#contact"
+           class="mt-6 w-full py-3 rounded-xl bg-white text-jeju-700 text-sm font-bold text-center hover:bg-jeju-50 transition-colors">
+          신청하기 →
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     REGENERATION AREAS
+========================================================= -->
+<section id="areas" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <p class="text-jeju-600 font-semibold text-sm tracking-widest uppercase mb-2">Regeneration Areas</p>
+      <h2 class="text-4xl font-black text-gray-900">재생활성화 지역</h2>
+      <p class="text-gray-500 mt-3">제주 원도심을 중심으로 12개 지역에서 재생 사업이 진행 중입니다.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="relative rounded-2xl overflow-hidden h-72 group">
+        <img
+          src="https://images.unsplash.com/photo-1588416936097-41850ab3d86d?w=700&q=80"
+          alt="삼도2동"
+          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          onerror="this.src='https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=700&q=80'"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+          <span class="text-xs text-jeju-300 font-semibold uppercase tracking-wider">도시재생 뉴딜</span>
+          <h3 class="text-xl font-bold text-white mt-1">삼도2동 원도심</h3>
+          <p class="text-sm text-gray-300 mt-1">관덕정 · 제주목 관아 인근 역사문화 중심지</p>
+        </div>
+      </div>
+
+      <div class="relative rounded-2xl overflow-hidden h-72 group">
+        <img
+          src="https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=700&q=80"
+          alt="건입동"
+          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          onerror="this.src='https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=700&q=80'"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+          <span class="text-xs text-amber-400 font-semibold uppercase tracking-wider">일반근린형</span>
+          <h3 class="text-xl font-bold text-white mt-1">건입동 산지천 일대</h3>
+          <p class="text-sm text-gray-300 mt-1">산지천 생태하천과 연계한 수변 재생 사업</p>
+        </div>
+      </div>
+
+      <div class="relative rounded-2xl overflow-hidden h-72 group">
+        <img
+          src="https://images.unsplash.com/photo-1467190280992-da9e9cba2a0b?w=700&q=80"
+          alt="이도1동"
+          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          onerror="this.src='https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=700&q=80'"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+          <span class="text-xs text-purple-400 font-semibold uppercase tracking-wider">주거지원형</span>
+          <h3 class="text-xl font-bold text-white mt-1">이도1동 주거지</h3>
+          <p class="text-sm text-gray-300 mt-1">노후 주거환경 개선 및 커뮤니티 공간 조성</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-8">
+      <a href="#" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-jeju-600 text-jeju-600 font-semibold hover:bg-jeju-600 hover:text-white transition-colors">
+        전체 지역 보기
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     NEWS
+========================================================= -->
+<section id="news" class="py-24 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex items-end justify-between mb-12">
+      <div>
+        <p class="text-jeju-600 font-semibold text-sm tracking-widest uppercase mb-2">News & Notice</p>
+        <h2 class="text-4xl font-black text-gray-900">새소식</h2>
+      </div>
+      <a href="#" class="hidden md:flex items-center gap-1 text-sm text-gray-500 hover:text-jeju-600 transition-colors font-medium">
+        전체보기
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- 뉴스 카드들 -->
+      <article class="card-hover bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+        <div class="h-44 overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80"
+            alt="워크숍"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            onerror="this.src='https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=600&q=80'"
+          />
+        </div>
+        <div class="p-5">
+          <span class="text-xs font-semibold text-jeju-600 bg-jeju-50 px-2 py-0.5 rounded-full">공지사항</span>
+          <h4 class="font-bold text-gray-900 mt-2 mb-1 line-clamp-2">
+            2026년 상반기 도시재생대학 수강생 모집 안내
+          </h4>
+          <p class="text-xs text-gray-400 leading-relaxed line-clamp-2">
+            원도심 주민을 대상으로 도시재생의 이해부터 실습까지 배울 수 있는 재생대학 수강생을 모집합니다.
+          </p>
+          <p class="text-xs text-gray-300 mt-3">2026. 06. 05</p>
+        </div>
+      </article>
+
+      <article class="card-hover bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+        <div class="h-44 overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1560523159-4a9692d222ef?w=600&q=80"
+            alt="포럼"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            onerror="this.src='https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600&q=80'"
+          />
+        </div>
+        <div class="p-5">
+          <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">사업소식</span>
+          <h4 class="font-bold text-gray-900 mt-2 mb-1 line-clamp-2">
+            삼도2동 마을 포럼 성료 — 주민 120명 참여
+          </h4>
+          <p class="text-xs text-gray-400 leading-relaxed line-clamp-2">
+            삼도2동 일대 도시재생 방향성 논의를 위한 주민 포럼이 성황리에 마무리되었습니다.
+          </p>
+          <p class="text-xs text-gray-300 mt-3">2026. 05. 28</p>
+        </div>
+      </article>
+
+      <article class="card-hover bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+        <div class="h-44 overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80"
+            alt="골목축제"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            onerror="this.src='https://images.unsplash.com/photo-1476704445965-c0f7acd1a6f9?w=600&q=80'"
+          />
+        </div>
+        <div class="p-5">
+          <span class="text-xs font-semibold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">행사안내</span>
+          <h4 class="font-bold text-gray-900 mt-2 mb-1 line-clamp-2">
+            원도심 골목축제 「탐라별곡」 6월 개최
+          </h4>
+          <p class="text-xs text-gray-400 leading-relaxed line-clamp-2">
+            제주 원도심 골목골목을 무대로 한 문화예술 축제가 6월 셋째 주 주말에 열립니다.
+          </p>
+          <p class="text-xs text-gray-300 mt-3">2026. 05. 20</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     CTA BANNER
+========================================================= -->
+<section class="relative py-24 overflow-hidden">
+  <img
+    src="https://images.unsplash.com/photo-1579309401389-a2476dddf3d4?w=1800&q=80"
+    alt="제주 야경"
+    class="absolute inset-0 w-full h-full object-cover"
+    onerror="this.src='https://images.unsplash.com/photo-1536599018102-9f803c140fc1?w=1800&q=80'"
+  />
+  <div class="absolute inset-0 bg-jeju-900/80"></div>
+  <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+    <p class="text-jeju-300 text-sm font-semibold tracking-widest uppercase mb-3">Join Us</p>
+    <h2 class="text-4xl md:text-5xl font-black text-white leading-tight mb-5">
+      원도심 재생의 여정,<br/>함께 시작하세요
+    </h2>
+    <p class="text-gray-300 text-lg mb-8">
+      주민, 청년, 기업, 공공이 함께 만들어가는 제주 원도심의 미래에 동참하세요.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="#contact"
+         class="px-8 py-3.5 rounded-xl bg-jeju-500 hover:bg-jeju-400 text-white font-bold transition-colors shadow-lg">
+        참여 문의하기
+      </a>
+      <a href="#programs"
+         class="px-8 py-3.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/30 text-white font-bold backdrop-blur transition-colors">
+        사업 살펴보기
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     CONTACT
+========================================================= -->
+<section id="contact" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
+
+    <!-- 정보 -->
+    <div>
+      <p class="text-jeju-600 font-semibold text-sm tracking-widest uppercase mb-2">Contact</p>
+      <h2 class="text-4xl font-black text-gray-900 mb-6">오시는 길</h2>
+      <p class="text-gray-500 mb-8 leading-relaxed">
+        센터 방문이나 사업 문의는 아래 연락처로 문의해 주세요.
+        상담 예약 후 방문하시면 더욱 원활한 안내를 받으실 수 있습니다.
+      </p>
+
+      <div class="space-y-5">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-jeju-50 flex-shrink-0 flex items-center justify-center">
+            <svg class="w-5 h-5 text-jeju-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-900 text-sm">주소</p>
+            <p class="text-gray-500 text-sm mt-0.5">제주특별자치도 제주시 이도2동 삼성로 22 (우편번호 63220)</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-jeju-50 flex-shrink-0 flex items-center justify-center">
+            <svg class="w-5 h-5 text-jeju-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-900 text-sm">전화</p>
+            <p class="text-gray-500 text-sm mt-0.5">064-728-3900</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-jeju-50 flex-shrink-0 flex items-center justify-center">
+            <svg class="w-5 h-5 text-jeju-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-900 text-sm">이메일</p>
+            <p class="text-gray-500 text-sm mt-0.5">urban@jeju.go.kr</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-jeju-50 flex-shrink-0 flex items-center justify-center">
+            <svg class="w-5 h-5 text-jeju-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-900 text-sm">운영시간</p>
+            <p class="text-gray-500 text-sm mt-0.5">평일 09:00 – 18:00 (점심 12:00 – 13:00) · 주말·공휴일 휴무</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 문의 폼 -->
+    <form class="bg-gray-50 rounded-2xl p-8 border border-gray-100 space-y-5">
+      <h3 class="text-xl font-bold text-gray-900">온라인 문의</h3>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">이름 <span class="text-red-500">*</span></label>
+          <input type="text" placeholder="홍길동"
+            class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-jeju-500 focus:ring-2 focus:ring-jeju-500/20 transition" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">연락처 <span class="text-red-500">*</span></label>
+          <input type="tel" placeholder="010-0000-0000"
+            class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-jeju-500 focus:ring-2 focus:ring-jeju-500/20 transition" />
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">이메일</label>
+        <input type="email" placeholder="example@email.com"
+          class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-jeju-500 focus:ring-2 focus:ring-jeju-500/20 transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">문의 유형</label>
+        <select class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-jeju-500 focus:ring-2 focus:ring-jeju-500/20 transition bg-white">
+          <option value="">선택해 주세요</option>
+          <option>사업 참여 문의</option>
+          <option>공간 이용 문의</option>
+          <option>교육 프로그램 문의</option>
+          <option>기타</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1.5">문의 내용 <span class="text-red-500">*</span></label>
+        <textarea rows="4" placeholder="문의 내용을 자유롭게 입력해 주세요."
+          class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-jeju-500 focus:ring-2 focus:ring-jeju-500/20 transition resize-none"></textarea>
+      </div>
+      <button type="submit"
+        class="w-full py-3 rounded-xl bg-jeju-600 hover:bg-jeju-700 text-white font-semibold transition-colors shadow-md shadow-jeju-900/20">
+        문의 보내기
+      </button>
+    </form>
+  </div>
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+<footer class="bg-gray-900 text-gray-400">
+  <div class="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-4 gap-8">
+    <!-- 로고·소개 -->
+    <div class="md:col-span-2">
+      <div class="flex items-center gap-2.5 mb-4">
+        <div class="w-9 h-9 rounded-lg bg-jeju-600 flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 21V12h6v9"/>
+          </svg>
+        </div>
+        <span class="text-white font-bold">제주도시재생지원센터</span>
+      </div>
+      <p class="text-sm leading-relaxed max-w-xs">
+        제주 원도심의 역사와 문화를 보전하며,<br/>
+        주민과 함께 지속 가능한 도시 공동체를 만들어갑니다.
+      </p>
+      <div class="flex gap-3 mt-5">
+        <a href="#" class="w-9 h-9 rounded-lg bg-gray-800 hover:bg-jeju-600 flex items-center justify-center transition-colors">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+        <a href="#" class="w-9 h-9 rounded-lg bg-gray-800 hover:bg-jeju-600 flex items-center justify-center transition-colors">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          </svg>
+        </a>
+        <a href="#" class="w-9 h-9 rounded-lg bg-gray-800 hover:bg-jeju-600 flex items-center justify-center transition-colors">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.2 8.2 0 004.84 1.56V6.82a4.85 4.85 0 01-1.07-.13z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 빠른 링크 -->
+    <div>
+      <h4 class="text-white font-semibold mb-4 text-sm">바로가기</h4>
+      <ul class="space-y-2.5 text-sm">
+        <li><a href="#about"    class="hover:text-jeju-400 transition-colors">센터 소개</a></li>
+        <li><a href="#programs" class="hover:text-jeju-400 transition-colors">사업 안내</a></li>
+        <li><a href="#areas"    class="hover:text-jeju-400 transition-colors">재생 지역</a></li>
+        <li><a href="#news"     class="hover:text-jeju-400 transition-colors">새소식</a></li>
+        <li><a href="#contact"  class="hover:text-jeju-400 transition-colors">오시는 길</a></li>
+      </ul>
+    </div>
+
+    <!-- 관련 기관 -->
+    <div>
+      <h4 class="text-white font-semibold mb-4 text-sm">관련 기관</h4>
+      <ul class="space-y-2.5 text-sm">
+        <li><a href="#" class="hover:text-jeju-400 transition-colors">국토교통부</a></li>
+        <li><a href="#" class="hover:text-jeju-400 transition-colors">제주특별자치도</a></li>
+        <li><a href="#" class="hover:text-jeju-400 transition-colors">제주시청</a></li>
+        <li><a href="#" class="hover:text-jeju-400 transition-colors">한국토지주택공사(LH)</a></li>
+        <li><a href="#" class="hover:text-jeju-400 transition-colors">도시재생지원기구</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-gray-800 py-5">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-gray-600">
+      <p>© 2026 제주도시재생지원센터. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" class="hover:text-gray-400 transition-colors">개인정보처리방침</a>
+        <a href="#" class="hover:text-gray-400 transition-colors">이용약관</a>
+        <a href="#" class="hover:text-gray-400 transition-colors">사이트맵</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 모바일 메뉴 토글
+  document.getElementById('menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+
+  // 모바일 메뉴 항목 클릭 시 닫기
+  document.querySelectorAll('#mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.add('hidden');
+    });
+  });
+</script>
+</body>
+</html>
